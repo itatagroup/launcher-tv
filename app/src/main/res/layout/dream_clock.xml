@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Salvapantallas: hora y fecha tenues sobre negro. ClockDream mueve el bloque cada minuto. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dream_background">
+  <LinearLayout
+      android:id="@+id/dream_block"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="@string/clock_format"
+        android:format24Hour="@string/clock_format"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@color/dream_clock"
+        android:textSize="@dimen/dream_clock_size"/>
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="@string/date_format"
+        android:format24Hour="@string/date_format"
+        android:textColor="@color/dream_date"
+        android:textSize="@dimen/dream_date_size"/>
+  </LinearLayout>
+</FrameLayout>

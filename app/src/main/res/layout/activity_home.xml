@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Inicio: hora y fecha arriba a la izquierda, una fila de favoritas grandes y debajo el resto.
+     Si hay más apps de las que caben, solo «Todas las apps» se desplaza. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:paddingLeft="@dimen/screen_padding_h"
+    android:paddingRight="@dimen/screen_padding_h"
+    android:paddingTop="@dimen/screen_padding_top"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/grid_inset"
+      android:orientation="horizontal"
+      android:baselineAligned="true">
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="@string/clock_format"
+        android:format24Hour="@string/clock_format"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/clock"
+        android:textSize="@dimen/clock_size"/>
+    <TextClock
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/date_margin"
+        android:format12Hour="@string/date_format"
+        android:format24Hour="@string/date_format"
+        android:textColor="@color/date"
+        android:textSize="@dimen/date_size"/>
+  </LinearLayout>
+
+  <TextView
+      android:id="@+id/favorites_title"
+      style="@style/Section"
+      android:text="@string/favorites"/>
+  <GridView
+      android:id="@+id/favorites"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:numColumns="@integer/fav_columns"
+      android:columnWidth="@dimen/fav_width"
+      android:stretchMode="none"
+      android:horizontalSpacing="@dimen/fav_spacing_h"
+      android:verticalSpacing="@dimen/fav_spacing"
+      android:padding="@dimen/grid_inset"
+      android:clipToPadding="false"
+      android:clipChildren="false"
+      android:listSelector="@android:color/transparent"
+      android:scrollbars="none"
+      android:nextFocusDown="@+id/apps"/>
+
+  <TextView
+      android:id="@+id/apps_title"
+      style="@style/Section"
+      android:text="@string/all_apps"/>
+  <GridView
+      android:id="@+id/apps"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:numColumns="@integer/app_columns"
+      android:columnWidth="@dimen/app_width"
+      android:stretchMode="none"
+      android:horizontalSpacing="@dimen/app_spacing_h"
+      android:verticalSpacing="@dimen/app_spacing_v"
+      android:padding="@dimen/grid_inset"
+      android:clipToPadding="false"
+      android:clipChildren="false"
+      android:listSelector="@android:color/transparent"
+      android:scrollbars="none"
+      android:nextFocusUp="@id/favorites"/>
+</LinearLayout>

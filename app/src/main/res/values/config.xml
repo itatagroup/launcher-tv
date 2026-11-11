@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Favoritas de partida, en orden (vacía: cada uno marca las suyas manteniendo OK sobre una app).
+       Lo que se marca desde la TV queda guardado en el equipo y manda sobre esta lista.
+       Ejemplo: <item>com.google.android.youtube.tv</item> -->
+  <string-array name="default_favorites"></string-array>
+  <!-- Paquetes que no se muestran en el inicio (siguen instalados).
+       Ejemplo: agregar <item>com.android.vending</item> dentro de la lista. -->
+  <string-array name="hidden_packages">
+    <!-- TV Philips: entradas de fábrica sin uso que no se pueden quitar. -->
+    <item>com.android.tv.tou</item>                          <!-- ToU: términos de uso -->
+    <item>com.mstar.android.tv.disclaimercustomization</item> <!-- Disclaimer Customization -->
+    <item>com.mediatek.tv.service</item>                     <!-- «Televisión en directo»: atajo a Netflix; el servicio sigue -->
+  </string-array>
+</resources>

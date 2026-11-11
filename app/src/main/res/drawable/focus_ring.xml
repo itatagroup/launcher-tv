@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Borde de foco, dibujado ENCIMA del banner (foreground), para que la imagen no lo tape. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:state_selected="true">
+    <shape android:shape="rectangle">
+      <solid android:color="@android:color/transparent"/>
+      <stroke android:width="@dimen/card_stroke" android:color="@color/accent"/>
+      <corners android:radius="@dimen/card_radius"/>
+    </shape>
+  </item>
+  <item android:drawable="@android:color/transparent"/>
+</selector>

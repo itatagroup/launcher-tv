@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Paleta grafito oliva de Itatagroup (tema oscuro). -->
+  <color name="background">#1D2019</color>
+  <color name="card">#2A2E24</color>
+  <color name="accent">#B5D67A</color>
+  <color name="label">#A9B09B</color>
+  <color name="label_focus">#FFFFFF</color>
+  <color name="section">#8C937E</color>
+  <color name="clock">#E4E8DA</color>
+  <color name="date">#A9B09B</color>
+  <!-- Salvapantallas: tenue sobre negro para no marcar la pantalla. -->
+  <color name="dream_background">#000000</color>
+  <color name="dream_clock">#7C8470</color>
+  <color name="dream_date">#5C6352</color>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Una app: su banner 16:9 a sangre (o, si no trae, su ícono sobre la tarjeta) y el nombre debajo,
+     porque muchos banners no lo dicen. El tamaño de la tarjeta lo fija el adaptador (favoritas
+     grandes, el resto chicas). La cuadrícula marca como «selected» la app con el foco: crece
+     (animator/focus), muestra el borde (focus_ring) y el nombre pasa a blanco. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:stateListAnimator="@animator/focus">
+  <FrameLayout
+      android:id="@+id/card"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/card"
+      android:foreground="@drawable/focus_ring"
+      android:duplicateParentState="true">
+    <ImageView
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:importantForAccessibility="no"/>
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_gravity="center"
+        android:background="@drawable/icon_clip"
+        android:importantForAccessibility="no"
+        android:visibility="gone"/>
+  </FrameLayout>
+  <TextView
+      android:id="@+id/label"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/label_margin"
+      android:singleLine="true"
+      android:ellipsize="end"
+      android:textColor="@color/label_state"
+      android:textSize="@dimen/label_size"
+      android:duplicateParentState="true"/>
+</LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo de la tarjeta: solo se ve en las apps sin banner (con banner, la imagen lo cubre). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+  <solid android:color="@color/card"/>
+  <corners android:radius="@dimen/card_radius"/>
+</shape>

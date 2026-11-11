@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Las teles dibujan a 960 x 540 dp. Los márgenes respetan la zona segura de TV (~5 %). -->
+  <dimen name="screen_padding_h">48dp</dimen>
+  <dimen name="screen_padding_top">28dp</dimen>
+  <!-- Margen interno de las cuadrículas: deja lugar a la tarjeta con foco, que crece un 8 %. -->
+  <dimen name="grid_inset">10dp</dimen>
+
+  <dimen name="clock_size">34sp</dimen>
+  <dimen name="date_size">16sp</dimen>
+  <dimen name="date_margin">14dp</dimen>
+  <dimen name="section_size">14sp</dimen>
+  <dimen name="section_margin_top">14dp</dimen>
+  <dimen name="section_margin_bottom">2dp</dimen>
+
+  <!-- Favoritas: 4 por fila, banners 16:9 grandes. -->
+  <dimen name="fav_width">192dp</dimen>
+  <dimen name="fav_height">108dp</dimen>
+  <!-- Con 960 dp de ancho, 4 x 192 + 3 x 25 = 6 x 128 + 5 x 15 = 843 dp: las dos filas empiezan y
+       terminan en el mismo borde que los títulos. -->
+  <dimen name="fav_spacing_h">25dp</dimen>
+  <dimen name="fav_spacing">12dp</dimen>
+  <!-- Todas las apps: 6 por fila, banners 16:9 chicos. -->
+  <dimen name="app_width">128dp</dimen>
+  <dimen name="app_height">72dp</dimen>
+  <dimen name="app_spacing_h">15dp</dimen>
+  <dimen name="app_spacing_v">10dp</dimen>
+
+  <dimen name="card_radius">8dp</dimen>
+  <dimen name="card_stroke">3dp</dimen>
+  <dimen name="icon_size">40dp</dimen>
+  <dimen name="icon_radius">10dp</dimen>
+  <dimen name="label_size">12sp</dimen>
+  <dimen name="label_margin">6dp</dimen>
+
+  <!-- Salvapantallas -->
+  <dimen name="dream_clock_size">64sp</dimen>
+  <dimen name="dream_date_size">20sp</dimen>
+</resources>

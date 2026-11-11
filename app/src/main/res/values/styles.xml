@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="Section">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginLeft">@dimen/grid_inset</item>
+    <item name="android:layout_marginTop">@dimen/section_margin_top</item>
+    <item name="android:layout_marginBottom">@dimen/section_margin_bottom</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textColor">@color/section</item>
+    <item name="android:textSize">@dimen/section_size</item>
+  </style>
+  <!-- Menú de mantener OK con la paleta del inicio, no la del sistema. -->
+  <style name="Menu" parent="android:Theme.Material.Dialog.Alert">
+    <item name="android:colorBackgroundFloating">@color/card</item>
+    <item name="android:colorBackground">@color/card</item>
+    <item name="android:colorAccent">@color/accent</item>
+    <item name="android:textColorPrimary">@color/clock</item>
+  </style>
+</resources>
