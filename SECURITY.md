@@ -9,7 +9,10 @@ repositorio de GitHub (reporte privado). Cuenta qué encontraste, cómo reproduc
 ## Qué está en alcance
 
 - El código del launcher y del salvapantallas (`app/`).
-- El proceso de compilación y firma (`tools/build.mjs`).
+- El proceso de compilación y firma (`tools/build.mjs`) y el de publicación (`scripts/publicar.ps1`,
+  `tools/firmar-manifiesto.mjs`).
+- La búsqueda de actualización: que se pueda instalar algo sin firma válida del manifiesto, sin el
+  SHA-256 correcto o sin la confirmación de Android, o que el inicio se conecte sin que lo pidas.
 - Los scripts de instalación y limpieza (`scripts/`), por ejemplo si ejecutan algo no esperado.
 - Que una APK publicada no corresponda al código fuente, o que pida permisos que el código no declara.
 
@@ -20,5 +23,6 @@ repositorio de GitHub (reporte privado). Cuenta qué encontraste, cómo reproduc
 - Cambios en la TV hechos por el usuario con los scripts opcionales de limpieza, que son reversibles
   y están documentados.
 
-El launcher no tiene permiso de internet, no envía datos y no guarda cuentas; aun así, cualquier
-hallazgo que contradiga eso es de máxima prioridad.
+El launcher solo usa internet cuando eliges «Buscar actualización del inicio» (un GET a los archivos del
+release en GitHub, sin datos del equipo), no envía datos y no guarda cuentas; cualquier hallazgo que
+contradiga eso es de máxima prioridad.

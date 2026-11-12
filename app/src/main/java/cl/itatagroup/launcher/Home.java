@@ -24,14 +24,20 @@ import java.util.Map;
 /**
  * Pantalla de inicio: hora y fecha, una fila de favoritas y el resto de las apps, sin tienda,
  * recomendaciones ni publicidad. Mantener OK sobre una app abre su menú (favorita, información,
- * desinstalar).
+ * desinstalar y buscar una actualización del propio inicio).
  */
 public class Home extends Activity {
+    /** Manifiesto firmado del último release (contrato común de actualización). Solo se pide a mano. */
+    private static final String MANIFIESTO =
+            "https://github.com/itatagroup/launcher-tv/releases/latest/download/version.json";
+
     private AppsAdapter favoritesAdapter;
     private AppsAdapter appsAdapter;
     private GridView favoritesGrid;
     private View favoritesTitle;
     private Favorites favorites;
+    private Actualizador actualizador;
+    private AlertDialog downloadDialog;
 
     /** La lista solo se rearma cuando se instala, quita o cambia una app, no en cada resume. */
     private final BroadcastReceiver packageChanges = new BroadcastReceiver() {
@@ -51,6 +57,7 @@ public class Home extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         favorites = new Favorites(this);
+        actualizador = new Actualizador(this, "itatagroup/launcher-tv", "launcher-android", "Inicio");
         favoritesAdapter = new AppsAdapter(this, R.dimen.fav_width, R.dimen.fav_height);
         appsAdapter = new AppsAdapter(this, R.dimen.app_width, R.dimen.app_height);
         favoritesTitle = findViewById(R.id.favorites_title);
@@ -91,6 +98,8 @@ public class Home extends Activity {
     @Override
     protected void onDestroy() {
         unregisterReceiver(packageChanges);
+        actualizador.cancelar();
+        closeDownloadDialog();
         super.onDestroy();
     }
 
@@ -144,6 +153,7 @@ public class Home extends Activity {
                 getString(favorite ? R.string.menu_remove_favorite : R.string.menu_add_favorite),
                 getString(R.string.menu_info),
                 getString(app.system ? R.string.menu_uninstall_blocked : R.string.menu_uninstall),
+                getString(R.string.menu_update),
         };
         ArrayAdapter<String> items = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_1, options) {
@@ -171,6 +181,8 @@ public class Home extends Activity {
                             reload();
                         } else if (which == 1) {
                             start(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri));
+                        } else if (which == 3) {
+                            checkForUpdate();
                         } else if (!app.system) {
                             // Diálogo de confirmación del sistema; al quitarla, la lista se rearma sola.
                             start(new Intent(Intent.ACTION_DELETE, uri));
@@ -178,5 +190,89 @@ public class Home extends Activity {
                     }
                 })
                 .show();
+    }
+
+    // --- actualización del propio inicio (ver docs/actualizaciones.md) ---
+
+    /** Única forma en que el inicio se conecta a internet: cuando eliges esta opción. */
+    private void checkForUpdate() {
+        Toast.makeText(this, R.string.update_checking, Toast.LENGTH_SHORT).show();
+        actualizador.comprobar(MANIFIESTO, new Actualizador.AlComprobar() {
+            @Override
+            public void hayVersion(Actualizador.Oferta oferta) {
+                offerUpdate(oferta);
+            }
+
+            @Override
+            public void alDia() {
+                Toast.makeText(Home.this, getString(R.string.update_current, actualizador.versionNombre()),
+                        Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void fallo() {
+                // Sin detalles técnicos en pantalla: el motivo queda en el registro (logcat, «Actualizador»).
+                Toast.makeText(Home.this, R.string.update_check_failed, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void offerUpdate(final Actualizador.Oferta oferta) {
+        if (isFinishing()) return;
+        new AlertDialog.Builder(this, R.style.Menu)
+                .setTitle(getString(R.string.update_available, oferta.version))
+                .setMessage(oferta.notas.isEmpty() ? getString(R.string.update_no_notes) : oferta.notas)
+                .setPositiveButton(R.string.update_now, (dialog, which) -> update(oferta))
+                .setNegativeButton(R.string.update_later, null)
+                .show();
+    }
+
+    private void update(final Actualizador.Oferta oferta) {
+        if (!actualizador.puedeInstalar()) {
+            // Android 8+: cada app necesita el permiso «instalar apps desconocidas»; se explica antes de abrirlo.
+            new AlertDialog.Builder(this, R.style.Menu)
+                    .setTitle(R.string.update_permission_title)
+                    .setMessage(R.string.update_permission)
+                    .setPositiveButton(R.string.update_permission_open, (dialog, which) -> {
+                        if (!Actualizador.abrirPermisoDeInstalacion(Home.this)) {
+                            Toast.makeText(Home.this, R.string.update_permission_missing, Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.update_later, null)
+                    .show();
+            return;
+        }
+        closeDownloadDialog();
+        downloadDialog = new AlertDialog.Builder(this, R.style.Menu)
+                .setTitle(getString(R.string.update_available, oferta.version))
+                .setMessage(getString(R.string.update_downloading, oferta.version, 0))
+                .setNegativeButton(R.string.update_cancel, (dialog, which) -> actualizador.cancelar())
+                .setOnCancelListener(dialog -> actualizador.cancelar())
+                .show();
+        actualizador.descargarEInstalar(oferta, new Actualizador.AlDescargar() {
+            @Override
+            public void avance(int porcentaje) {
+                if (downloadDialog != null) {
+                    downloadDialog.setMessage(getString(R.string.update_downloading, oferta.version, porcentaje));
+                }
+            }
+
+            @Override
+            public void instalando() {
+                closeDownloadDialog();
+                Toast.makeText(Home.this, R.string.update_confirm, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void fallo() {
+                closeDownloadDialog();
+                Toast.makeText(Home.this, R.string.update_download_failed, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void closeDownloadDialog() {
+        if (downloadDialog != null && downloadDialog.isShowing()) downloadDialog.dismiss();
+        downloadDialog = null;
     }
 }

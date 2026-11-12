@@ -4,3 +4,4 @@ keystore/
 *.jks
 *.idsig
 node_modules/
+dist/

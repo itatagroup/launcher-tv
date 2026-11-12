@@ -10,16 +10,18 @@ Cada release publica `SHA256SUMS.txt`. Compara la suma de tu archivo con la de e
 PowerShell:
 
 ```powershell
-Get-FileHash .\launcher.apk -Algorithm SHA256
+Get-FileHash .\inicio-0.4.0.apk -Algorithm SHA256
 ```
 
 Linux o macOS:
 
 ```bash
-sha256sum launcher.apk
+sha256sum inicio-0.4.0.apk
 ```
 
-Los valores deben ser idénticos a la línea de `launcher.apk` en `SHA256SUMS.txt`.
+Los valores deben ser idénticos a la línea de la APK en `SHA256SUMS.txt` (desde la 0.4.0 la APK del release
+se llama `inicio-<versión>.apk`; también trae `version.json` y su firma `version.json.sig`, ver
+`docs/actualizaciones.md`).
 
 ## 2. Certificado de firma
 
@@ -59,11 +61,16 @@ recursos con las mismas herramientas.
 
 ## 4. Revisar los permisos
 
-El launcher no debe pedir internet. Mira el manifiesto con `aapt2` (en `build-tools`):
+Mira el manifiesto con `aapt2` (en `build-tools`):
 
 ```bash
 aapt2 dump permissions launcher.apk
 ```
 
-Debe aparecer solo `android.permission.REQUEST_DELETE_PACKAGES` (para «Desinstalar»). Si aparece
-`android.permission.INTERNET` u otro permiso, no es la APK oficial.
+Desde la 0.4.0 deben aparecer exactamente estos tres:
+
+- `android.permission.REQUEST_DELETE_PACKAGES` (para «Desinstalar»).
+- `android.permission.INTERNET` y `android.permission.REQUEST_INSTALL_PACKAGES` (solo para «Buscar
+  actualización del inicio», ver `docs/actualizaciones.md`).
+
+Si aparece otro permiso, no es la APK oficial.

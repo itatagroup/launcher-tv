@@ -5,6 +5,10 @@
   <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
   <!-- Para «Desinstalar» del menú de mantener OK (abre el diálogo de confirmación del sistema). -->
   <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
+  <!-- Solo para «Buscar actualización del inicio» del menú de mantener OK: el inicio nunca se conecta si no
+       eliges esa opción, y Android siempre pide confirmar la instalación. -->
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
   <!-- Visibilidad de paquetes (Android 11+): sin esto la lista de apps quedaría vacía. -->
   <queries>
     <intent>
@@ -37,5 +41,7 @@
       </intent-filter>
       <meta-data android:name="android.service.dream" android:resource="@xml/dream"/>
     </service>
+    <!-- Resultado de la sesión de instalación de una actualización. Solo le llega el PendingIntent propio. -->
+    <receiver android:name=".ResultadoInstalacion" android:exported="false"/>
   </application>
 </manifest>

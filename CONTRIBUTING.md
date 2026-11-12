@@ -11,8 +11,10 @@
 ## Reglas del proyecto
 
 - **Sin dependencias externas.** Cada librería agrega MB y RAM; el objetivo es lo contrario.
-- **Sin telemetría ni conexiones a internet nuevas.** Hoy el launcher no pide el permiso `INTERNET`.
-  La única excepción prevista es la búsqueda de actualizaciones, opcional y que el usuario puede apagar.
+- **Sin telemetría ni conexiones a internet nuevas.** El launcher pide `INTERNET` y
+  `REQUEST_INSTALL_PACKAGES` **solo** para la búsqueda manual de actualización del propio inicio
+  (`Actualizador.java`, `docs/actualizaciones.md`): nunca se conecta si el usuario no la elige. No se acepta
+  ninguna otra conexión, ni consultas automáticas.
 - **El aspecto va en recursos XML** (`app/src/main/res/`), no en código. Lo configurable (columnas,
   favoritas de partida, paquetes ocultos) va en `res/values/config.xml`.
 - **Nunca subas claves.** `keystore/` está en `.gitignore`; no la incluyas en ningún commit.
@@ -26,8 +28,9 @@
 node tools/build.mjs
 ```
 
-Debe terminar con «Listo». Si puedes, prueba la APK en una TV (`docs/build-y-despliegue.md`,
-«Verificación manual»). No hay pruebas automáticas todavía.
+Debe terminar con «Listo». Si tocas `FirmaManifiesto.java`, corre también `node tools/probar-firma.mjs`
+(prueba la verificación de firma en el PC con `javac`/`java`). Si puedes, prueba la APK en una TV
+(`docs/build-y-despliegue.md`, «Verificación manual»). Fuera de eso no hay pruebas automáticas.
 
 ## Licencia
 

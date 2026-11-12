@@ -2,7 +2,8 @@
 
 Inicio (launcher) minimalista para Android TV. Muestra la hora y la fecha arriba, una fila de
 **favoritas** grandes y, debajo, **todas las apps** con su banner de TV y su nombre. **Mantener OK**
-sobre una app abre un menú para marcarla o quitarla de favoritas, ver su información o desinstalarla.
+sobre una app abre un menú para marcarla o quitarla de favoritas, ver su información, desinstalarla o
+buscar una actualización del propio inicio.
 Trae además un **salvapantallas** propio: un reloj que se desplaza por la pantalla.
 
 Sin tienda, sin recomendaciones, sin publicidad y con un consumo de RAM mínimo (~35 MB en una TV
@@ -15,15 +16,36 @@ Philips, frente a ~81 MB del launcher de Google y ~96 MB de Projectivy).
 ## Qué NO hace
 
 - **Sin telemetría, sin cuentas y sin publicidad.**
-- **Sin internet**: el launcher no pide el permiso `INTERNET` (se puede comprobar en
-  `app/src/main/AndroidManifest.xml` y con `docs/verificar.md`), así que no puede conectarse a ninguna red.
-  Está planeada una **búsqueda de actualizaciones opcional y que se puede apagar**: cuando llegue,
-  esta sección dirá exactamente qué consulta, a dónde, y cómo desactivarla.
+- **No se conecta a internet si no se lo pides.** La única conexión posible es la búsqueda manual de
+  actualización del propio inicio (ver «Actualizaciones» abajo): nunca consulta sola, ni al encender ni
+  en segundo plano.
 - Los únicos permisos que pide:
   - `REQUEST_DELETE_PACKAGES`: para la opción «Desinstalar» del menú de mantener OK (abre el diálogo
     de confirmación del sistema; nunca desinstala nada sin que lo confirmes).
   - `queries` (visibilidad de paquetes, Android 11+): para poder listar las apps instaladas; sin eso la
     lista quedaría vacía.
+  - `INTERNET` y `REQUEST_INSTALL_PACKAGES`: **solo** para «Buscar actualización del inicio». Se pueden
+    comprobar en `app/src/main/AndroidManifest.xml` y con `docs/verificar.md`.
+
+## Actualizaciones
+
+El inicio **nunca consulta solo**. Solo si mantienes OK sobre cualquier app y eliges **«Buscar
+actualización del inicio»** (la última opción del menú):
+
+1. Pide, con un GET sin cookies ni datos del equipo (User-Agent `Inicio/<versión>`), dos archivos del
+   último release de este repositorio en GitHub:
+   `https://github.com/itatagroup/launcher-tv/releases/latest/download/version.json` y su firma `version.json.sig`.
+2. Comprueba la firma con la clave pública que viene dentro de la app. Si no es válida, o si falla la
+   red, avisa «No se pudo comprobar» y no hace nada más.
+3. Si hay una versión mayor, te muestra la versión y sus notas con «Actualizar» / «Ahora no»; si no,
+   «El inicio está al día».
+4. Con «Actualizar» descarga la APK del release (solo HTTPS), comprueba su tamaño y su SHA-256 contra el
+   manifiesto firmado y se la entrega a Android, que **siempre pide confirmar** la instalación. La primera
+   vez Android pide además permitir «Instalar apps desconocidas» para Inicio; el inicio lo explica y abre
+   ese ajuste.
+
+No hay nada que apagar: si no eliges la opción, no hay conexión. Detalle del formato, la clave pública y
+cómo publicar una versión en `docs/actualizaciones.md`.
 
 ## Requisitos
 
@@ -85,6 +107,9 @@ app/src/main/
   AndroidManifest.xml          HOME + LEANBACK_LAUNCHER
   java/cl/itatagroup/launcher/
     Home.java                  inicio: favoritas + todas, lanzar app, menú de mantener OK, Atrás no sale
+    Actualizador.java          búsqueda manual de actualización: manifiesto firmado, descarga e instalación
+    FirmaManifiesto.java       verificación de la firma del manifiesto (Java puro, se prueba en el PC)
+    ResultadoInstalacion.java  resultado de la instalación: abre la confirmación de Android
     Favorites.java             favoritas en orden, guardadas en el equipo (la lista de partida en config.xml)
     ClockDream.java            salvapantallas: hora y fecha que cambian de lugar cada minuto
     AppCatalog.java            arma la lista: apps de TV y normales, sin repetir, sin ocultas
@@ -93,6 +118,9 @@ app/src/main/
   res/values/config.xml        columnas, favoritas de partida y paquetes ocultos (lo más fácil de cambiar)
   res/values/{colors,dimens,strings}.xml, res/layout/   aspecto
 tools/build.mjs                build y firma, igual en Windows y en Linux/macOS
+tools/firmar-manifiesto.mjs    firma version.json para un release (con keystore/actualizaciones.pem)
+tools/probar-firma.mjs         prueba en el PC la verificación de firma del actualizador
+scripts/publicar.ps1           arma dist/publicar/v<versión>/ para un release de GitHub
 scripts/instalar.ps1           instala por ADB y fija el inicio
 scripts/optimizar-tvbox.ps1    limpieza y ajustes de la Xiaomi (reversible)
 scripts/optimizar-philips.ps1  limpieza y ajustes de la Philips (reversible)
@@ -104,6 +132,7 @@ version.json                   versionCode / versionName
 
 - `docs/build-y-despliegue.md` — compilar, firmar e instalar.
 - `docs/verificar.md` — cómo comprobar que una APK descargada es la oficial.
+- `docs/actualizaciones.md` — la búsqueda de actualización: contrato, clave pública y cómo publicar.
 - `docs/equipo-xiaomi-mi-tv-stick.md` y `docs/equipo-philips-android-tv.md` — qué se quita y ajusta en cada equipo, y cómo revertirlo.
 - `CONTRIBUTING.md`, `SECURITY.md` y `AGENTS.md`.
 

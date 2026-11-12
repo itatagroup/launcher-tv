@@ -50,7 +50,9 @@ recién reiniciada hay que volver a autorizar ADB si cambió la clave del PC.
 ## Sin despliegue automático
 
 Este repo **solo guarda el código**: no tiene workflows de CI ni publica nada por sí mismo. El APK se
-compila en tu PC (`node tools/build.mjs`) y se instala en la TV con `scripts/instalar.ps1`.
+compila en tu PC (`node tools/build.mjs`) y se instala en la TV con `scripts/instalar.ps1`, o se publica a
+mano como release de GitHub con `scripts/publicar.ps1` para que las TV lo encuentren con «Buscar
+actualización del inicio» (ver `docs/actualizaciones.md`).
 
 ## Verificación manual (no hay pruebas automáticas)
 
