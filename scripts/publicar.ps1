@@ -27,6 +27,12 @@ if (-not $Notas) { $Notas = "Inicio $Version." }
 
 Push-Location $raiz
 try {
+  # El release se ancla al commit compilado: quien compile desde el tag obtiene lo mismo que se publica (docs/verificar.md).
+  if (git status --porcelain) { throw "Hay cambios sin commitear: el release tiene que salir de un commit limpio." }
+  $commit = (git rev-parse HEAD).Trim()
+  git fetch --quiet origin
+  if (-not (git branch -r --contains $commit)) { throw "El commit $commit no está en GitHub: empújalo antes de publicar." }
+
   & node tools/build.mjs
   if ($LASTEXITCODE -ne 0) { throw "Falló la compilación." }
 
@@ -78,7 +84,7 @@ $Notas
 
 ## Verificar
 
-SHA-256 de ``$nombreApk``: ``$sha`` ($tamano bytes). Todas las huellas en ``SHA256SUMS.txt``;
+Compilado desde el commit ``$commit`` (el de este tag). SHA-256 de ``$nombreApk``: ``$sha`` ($tamano bytes). Todas las huellas en ``SHA256SUMS.txt``;
 cómo comprobar que la APK es la oficial en ``docs/verificar.md``.
 "@
   [System.IO.File]::WriteAllText((Join-Path $destino "notas.md"), $textoNotas, $sinBom)
@@ -93,4 +99,4 @@ Get-ChildItem $destino | ForEach-Object { Write-Host ("  {0,-22} {1,10} bytes" -
 Write-Host ""
 Write-Host "Para crear el borrador del release (revísalo en GitHub y publícalo a mano):"
 $archivos = (@($nombreApk, "version.json", "version.json.sig", "SHA256SUMS.txt") | ForEach-Object { "`"$(Join-Path $destino $_)`"" }) -join " "
-Write-Host "gh release create v$Version --repo $repo --target main --draft --title `"Inicio $Version`" --notes-file `"$(Join-Path $destino 'notas.md')`" $archivos"
+Write-Host "gh release create v$Version --repo $repo --target $commit --draft --title `"Inicio $Version`" --notes-file `"$(Join-Path $destino 'notas.md')`" $archivos"

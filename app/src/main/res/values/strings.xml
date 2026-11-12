@@ -32,5 +32,4 @@
   <string name="update_permission">Para actualizar, Android pide permitir «Instalar apps desconocidas» para Inicio. Ábrelo, actívalo y vuelve a elegir «Buscar actualización del inicio».</string>
   <string name="update_permission_open">Abrir ajustes</string>
   <string name="update_permission_missing">No se encontró el ajuste. Busca «Instalar apps desconocidas» en los ajustes de Android.</string>
-  <string name="actualizacion_no_instalada">No se pudo instalar la actualización</string>
 </resources>

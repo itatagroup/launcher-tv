@@ -1,4 +1,4 @@
-// Copia de pantalla-tv/receptor-android/app/src/main/java/cl/itatagroup/pantalla/FirmaManifiesto.java; un arreglo aquí va también allá.
+// Copia de pantalla-tv/android-comun/java/cl/itatagroup/actualizacion/FirmaManifiesto.java (11/11/2026); un arreglo allá va también aquí.
 package cl.itatagroup.launcher;
 
 import java.security.KeyFactory;

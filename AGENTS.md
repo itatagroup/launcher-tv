@@ -42,7 +42,7 @@ apksigner). Detalle en `README.md`. Licencia GPL-3.0.
    `docs/equipo-philips-android-tv.md` y `scripts/optimizar-philips.ps1`.
 6. Sube `versionCode` en `version.json` en cada cambio que se vaya a publicar.
 7. `Actualizador.java`, `FirmaManifiesto.java` y `ResultadoInstalacion.java` son copia de los de
-   `pantalla-tv/receptor-android/`: un arreglo en uno va también al otro.
+   `pantalla-tv/android-comun/java/cl/itatagroup/actualizacion/`: un arreglo en uno va también al otro.
 
 ## Qué falta
 

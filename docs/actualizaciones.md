@@ -6,8 +6,9 @@ ni en segundo plano, ni con un temporizador. Es la única razón por la que pide
 `REQUEST_INSTALL_PACKAGES`.
 
 El mecanismo es el mismo contrato que usan el emisor de Windows y el receptor de `pantalla-tv` (el código
-de Android es copia de `pantalla-tv/receptor-android/`: `Actualizador.java`, `FirmaManifiesto.java` y
-`ResultadoInstalacion.java`).
+de Android es copia de `pantalla-tv/android-comun/java/cl/itatagroup/actualizacion/`: `Actualizador.java`,
+`FirmaManifiesto.java` y `ResultadoInstalacion.java`). Como este repo tiene una sola app, el manifiesto es el
+`version.json` del último release (`releases/latest`); en `pantalla-tv`, con tres apps, cada una tiene el suyo.
 
 ## Qué consulta y a dónde
 
@@ -73,7 +74,9 @@ Si algo falla, no ofrece nada: muestra «No se pudo comprobar» (sin detalles t�
 
 ## Cómo publicar una versión
 
-1. Sube `versionCode` y `versionName` en `version.json` y mezcla a `main`.
+1. Sube `versionCode` y `versionName` en `version.json`, commitea y empuja (el script se niega con cambios sin
+   commitear o con el commit sin empujar: el release se ancla a ese commit, para que quien compile desde el tag
+   obtenga lo mismo que se publica).
 2. Arma los archivos:
 
    ```powershell
@@ -82,7 +85,7 @@ Si algo falla, no ofrece nada: muestra «No se pudo comprobar» (sin detalles t�
 
    Compila, y deja en `dist/publicar/v0.4.0/` (ignorado por git): `inicio-0.4.0.apk`, `version.json`,
    `version.json.sig`, `SHA256SUMS.txt` y `notas.md`. Al final **imprime** el comando
-   `gh release create v0.4.0 ... --draft`, que no corre solo.
+   `gh release create v0.4.0 --target <commit> ... --draft`, que no corre solo.
 3. Corre ese comando, revisa el borrador en GitHub y publícalo. Recién publicado pasa a ser el «latest»
    que encuentran las TV.
 

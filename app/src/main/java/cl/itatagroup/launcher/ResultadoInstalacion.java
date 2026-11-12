@@ -1,4 +1,4 @@
-// Copia de pantalla-tv/receptor-android/app/src/main/java/cl/itatagroup/pantalla/ResultadoInstalacion.java; un arreglo aquí va también allá.
+// Copia de pantalla-tv/android-comun/java/cl/itatagroup/actualizacion/ResultadoInstalacion.java (11/11/2026); un arreglo allá va también aquí.
 package cl.itatagroup.launcher;
 
 import android.content.ActivityNotFoundException;
@@ -16,6 +16,8 @@ import android.widget.Toast;
  */
 public class ResultadoInstalacion extends BroadcastReceiver {
     private static final String TAG = "Actualizador";
+    /** Sin recursos propios: esta clase se comparte entre apps con distinto paquete de R. */
+    private static final String NO_INSTALADA = "No se pudo instalar la actualización";
 
     @Override
     @SuppressWarnings("deprecation")
@@ -29,7 +31,7 @@ public class ResultadoInstalacion extends BroadcastReceiver {
                 contexto.startActivity(confirmar);
             } catch (ActivityNotFoundException | SecurityException e) {
                 Log.w(TAG, "no se pudo abrir la confirmación de instalación: " + e);
-                Toast.makeText(contexto, R.string.actualizacion_no_instalada, Toast.LENGTH_LONG).show();
+                Toast.makeText(contexto, NO_INSTALADA, Toast.LENGTH_LONG).show();
             }
         } else if (estado == PackageInstaller.STATUS_SUCCESS) {
             Log.i(TAG, "actualización instalada");
@@ -38,7 +40,7 @@ public class ResultadoInstalacion extends BroadcastReceiver {
                     + intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE));
             // Si la cancelaste tú en la confirmación no hace falta avisar.
             if (estado != PackageInstaller.STATUS_FAILURE_ABORTED) {
-                Toast.makeText(contexto, R.string.actualizacion_no_instalada, Toast.LENGTH_LONG).show();
+                Toast.makeText(contexto, NO_INSTALADA, Toast.LENGTH_LONG).show();
             }
         }
     }
