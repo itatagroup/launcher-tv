@@ -70,7 +70,9 @@ public class Home extends Activity {
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         filter.addDataScheme("package");
-        registerReceiver(packageChanges, filter);
+        // Son avisos del sistema: llegan igual sin exportar el receptor (Android 13+ exige decirlo).
+        if (android.os.Build.VERSION.SDK_INT >= 33) registerReceiver(packageChanges, filter, Context.RECEIVER_NOT_EXPORTED);
+        else registerReceiver(packageChanges, filter);
 
         reload();
         // Botones de la cabecera: lo del propio inicio, a la vista (no en el menú de cada app).
