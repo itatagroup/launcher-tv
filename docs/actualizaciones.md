@@ -86,7 +86,9 @@ Si algo falla, no ofrece nada: muestra «No se pudo comprobar» (sin detalles t�
    Compila, y deja en `dist/publicar/v0.4.0/` (ignorado por git): `inicio-0.4.0.apk`, `version.json`,
    `version.json.sig`, `SHA256SUMS.txt` y `notas.md`. Al final **imprime** el comando
    `gh release create v0.4.0 --target <commit> ... --draft`, que no corre solo.
-3. Corre ese comando, revisa el borrador en GitHub y publícalo. Recién publicado pasa a ser el «latest»
+3. Corre ese comando, revisa el borrador en GitHub y publícalo. Si la página pública de descargas enlaza la
+   versión (la de Itatagroup, `itatagroup.cl/utilidades/limpiar-tv/`), actualiza ahí el enlace, la huella y el
+   análisis de VirusTotal. Recién publicado pasa a ser el «latest»
    que encuentran las TV.
 
 La APK tiene que ir firmada con la misma clave del almacén (`keystore/launcher.jks`) que la instalada: si
