@@ -15,8 +15,18 @@
   <string name="menu_uninstall">Desinstalar</string>
   <string name="menu_uninstall_blocked">Desinstalar (no se puede: es del sistema)</string>
   <string name="dream_name">Reloj</string>
-  <!-- Actualización del propio inicio (solo cuando se elige en el menú de mantener OK) -->
-  <string name="menu_update">Buscar actualización del inicio</string>
+  <!-- Actualización del propio inicio (solo cuando se pulsa «Buscar actualización» en la cabecera) -->
+  <string name="boton_actualizar">Buscar actualización</string>
+  <string name="boton_telemetria_si">Telemetría: apagada</string>
+  <string name="boton_telemetria_no">Telemetría: sin vigilar</string>
+  <string name="boton_telemetria_sin_permiso">Telemetría: falta permiso</string>
+  <string name="guardian_titulo">Mantener apagada la telemetría</string>
+  <string name="guardian_estado">Al encender la tele y al volver al inicio, revisa los ajustes de envío de datos y vuelve a apagar los que la tele encendió sola. Hasta ahora los volvió a apagar %1$d veces%2$s.</string>
+  <string name="guardian_ultima">, la última el %1$s</string>
+  <string name="guardian_apagar">Apagar</string>
+  <string name="guardian_encender">Encender</string>
+  <string name="guardian_cerrar">Cerrar</string>
+  <string name="guardian_permiso">Para esto el inicio necesita un permiso que Android solo deja dar desde un PC, por ADB. Corre scripts/limpiar-tv.ps1 (lo da al instalar el inicio) o: adb shell pm grant cl.itatagroup.launcher android.permission.WRITE_SECURE_SETTINGS</string>
   <string name="update_checking">Buscando actualización…</string>
   <string name="update_current">El inicio está al día (%1$s)</string>
   <string name="update_check_failed">No se pudo comprobar</string>

@@ -9,6 +9,11 @@
        eliges esa opción, y Android siempre pide confirmar la instalación. -->
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+  <!-- Guardián de privacidad: mantener apagados los ajustes de envío de datos que algunas teles vuelven a
+       encender (ver GuardianPrivacidad). Android no lo concede al instalar: se da por ADB (pm grant) y sin él
+       el inicio no toca nada. RECEIVE_BOOT_COMPLETED, para revisarlos al encender la tele. -->
+  <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
   <!-- Visibilidad de paquetes (Android 11+): sin esto la lista de apps quedaría vacía. -->
   <queries>
     <intent>
@@ -43,5 +48,11 @@
     </service>
     <!-- Resultado de la sesión de instalación de una actualización. Solo le llega el PendingIntent propio. -->
     <receiver android:name=".ResultadoInstalacion" android:exported="false"/>
+    <!-- Al encender la tele: el guardián de privacidad revisa los ajustes. Solo lo llama el sistema. -->
+    <receiver android:name=".AlEncender" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+      </intent-filter>
+    </receiver>
   </application>
 </manifest>

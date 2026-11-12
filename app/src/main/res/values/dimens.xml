@@ -7,6 +7,7 @@
   <dimen name="grid_inset">10dp</dimen>
 
   <dimen name="clock_size">34sp</dimen>
+  <dimen name="boton_cabecera_espacio">12dp</dimen>
   <dimen name="date_size">16sp</dimen>
   <dimen name="date_margin">14dp</dimen>
   <dimen name="section_size">14sp</dimen>

@@ -1,7 +1,7 @@
 # Actualizaciones del inicio
 
-El inicio puede buscar una versión nueva de sí mismo, **solo cuando lo pides**: mantén OK sobre cualquier
-app → «Buscar actualización del inicio» (la última opción del menú). Nunca consulta solo: ni al encender,
+El inicio puede buscar una versión nueva de sí mismo, **solo cuando lo pides**: el botón «Buscar
+actualización», junto a la hora (desde la 0.5.0; antes era la última opción del menú de mantener OK). Nunca consulta solo: ni al encender,
 ni en segundo plano, ni con un temporizador. Es la única razón por la que pide `INTERNET` y
 `REQUEST_INSTALL_PACKAGES`.
 
@@ -99,5 +99,5 @@ no, Android rechaza la actualización.
 - La verificación de firma, en el PC: `node tools/probar-firma.mjs` (necesita `javac` y `java`). Compila
   `FirmaManifiesto.java` tal cual y comprueba que una firma buena da `true` y que un byte cambiado, otra
   clave o una firma rota dan `false`.
-- En una TV: con un release publicado de versión mayor a la instalada, «Buscar actualización del inicio»
+- En una TV: con un release publicado de versión mayor a la instalada, «Buscar actualización»
   tiene que ofrecerla y, con «Actualizar», terminar en la confirmación de Android.

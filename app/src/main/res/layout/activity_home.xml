@@ -12,10 +12,13 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
+  <!-- Cabecera: hora y fecha, y a la derecha los botones del propio inicio (se llega con la flecha arriba). -->
   <LinearLayout
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/grid_inset"
+      android:layout_marginRight="@dimen/grid_inset"
+      android:gravity="center_vertical"
       android:orientation="horizontal"
       android:baselineAligned="true">
     <TextClock
@@ -34,6 +37,20 @@
         android:format24Hour="@string/date_format"
         android:textColor="@color/date"
         android:textSize="@dimen/date_size"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/boton_telemetria"
+        style="@style/BotonCabecera"
+        android:nextFocusDown="@+id/favorites"/>
+    <Button
+        android:id="@+id/boton_actualizar"
+        style="@style/BotonCabecera"
+        android:layout_marginLeft="@dimen/boton_cabecera_espacio"
+        android:text="@string/boton_actualizar"
+        android:nextFocusDown="@+id/favorites"/>
   </LinearLayout>
 
   <TextView
@@ -54,6 +71,7 @@
       android:clipChildren="false"
       android:listSelector="@android:color/transparent"
       android:scrollbars="none"
+      android:nextFocusUp="@id/boton_telemetria"
       android:nextFocusDown="@+id/apps"/>
 
   <TextView

@@ -38,6 +38,7 @@ public class Home extends Activity {
     private Favorites favorites;
     private Actualizador actualizador;
     private AlertDialog downloadDialog;
+    private android.widget.Button botonTelemetria;
 
     /** La lista solo se rearma cuando se instala, quita o cambia una app, no en cada resume. */
     private final BroadcastReceiver packageChanges = new BroadcastReceiver() {
@@ -72,6 +73,10 @@ public class Home extends Activity {
         registerReceiver(packageChanges, filter);
 
         reload();
+        // Botones de la cabecera: lo del propio inicio, a la vista (no en el menú de cada app).
+        botonTelemetria = (android.widget.Button) findViewById(R.id.boton_telemetria);
+        botonTelemetria.setOnClickListener(v -> showGuardian());
+        findViewById(R.id.boton_actualizar).setOnClickListener(v -> checkForUpdate());
         View first = favoritesAdapter.getCount() > 0 ? favoritesGrid : findViewById(R.id.apps);
         first.requestFocus();
     }
@@ -127,6 +132,8 @@ public class Home extends Activity {
         int visibility = favs.isEmpty() ? View.GONE : View.VISIBLE;
         favoritesTitle.setVisibility(visibility);
         favoritesGrid.setVisibility(visibility);
+        // Sin favoritas, desde «Todas las apps» la flecha arriba lleva a los botones de la cabecera.
+        findViewById(R.id.apps).setNextFocusUpId(favs.isEmpty() ? R.id.boton_telemetria : R.id.favorites);
     }
 
     private void launch(AppEntry app) {
@@ -153,7 +160,6 @@ public class Home extends Activity {
                 getString(favorite ? R.string.menu_remove_favorite : R.string.menu_add_favorite),
                 getString(R.string.menu_info),
                 getString(app.system ? R.string.menu_uninstall_blocked : R.string.menu_uninstall),
-                getString(R.string.menu_update),
         };
         ArrayAdapter<String> items = new ArrayAdapter<String>(
                 this, android.R.layout.simple_list_item_1, options) {
@@ -181,14 +187,48 @@ public class Home extends Activity {
                             reload();
                         } else if (which == 1) {
                             start(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri));
-                        } else if (which == 3) {
-                            checkForUpdate();
+
                         } else if (!app.system) {
                             // Diálogo de confirmación del sistema; al quitarla, la lista se rearma sola.
                             start(new Intent(Intent.ACTION_DELETE, uri));
                         }
                     }
                 })
+                .show();
+    }
+
+    /** Revisa la telemetría cada vez que se vuelve al inicio (también al encender: ver AlEncender). */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GuardianPrivacidad.revisarEnSegundoPlano(this);
+        pintarBotonTelemetria();
+    }
+
+    private void pintarBotonTelemetria() {
+        botonTelemetria.setText(!GuardianPrivacidad.tienePermiso(this) ? R.string.boton_telemetria_sin_permiso
+                : GuardianPrivacidad.activo(this) ? R.string.boton_telemetria_si : R.string.boton_telemetria_no);
+    }
+
+    /** Estado del guardián de privacidad, con su interruptor; sin permiso, explica cómo darlo. */
+    private void showGuardian() {
+        AlertDialog.Builder dialogo = new AlertDialog.Builder(this, R.style.Menu).setTitle(R.string.guardian_titulo);
+        if (!GuardianPrivacidad.tienePermiso(this)) {
+            dialogo.setMessage(R.string.guardian_permiso).setPositiveButton(R.string.guardian_cerrar, null).show();
+            return;
+        }
+        final boolean activo = GuardianPrivacidad.activo(this);
+        long ultima = GuardianPrivacidad.ultimaCorreccion(this);
+        String cuando = ultima == 0 ? "" : getString(R.string.guardian_ultima,
+                android.text.format.DateFormat.getMediumDateFormat(this).format(new java.util.Date(ultima)) + " "
+                        + android.text.format.DateFormat.getTimeFormat(this).format(new java.util.Date(ultima)));
+        dialogo.setMessage(getString(R.string.guardian_estado, GuardianPrivacidad.correcciones(this), cuando))
+                .setPositiveButton(activo ? R.string.guardian_apagar : R.string.guardian_encender, (d, w) -> {
+                    GuardianPrivacidad.fijarActivo(Home.this, !activo);
+                    if (!activo) GuardianPrivacidad.revisarEnSegundoPlano(Home.this);
+                    pintarBotonTelemetria();
+                })
+                .setNegativeButton(R.string.guardian_cerrar, null)
                 .show();
     }
 

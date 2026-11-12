@@ -92,10 +92,11 @@ desactivado con `adb shell pm enable --user 0 <paquete>`. Los paquetes de cada e
 
 ### Cosas que pasan
 
-- **Algunos ajustes vuelven solos.** En la Xiaomi, `user_experience_enabled` y `upload_log_pref` volvieron a 1 días
-  después de ponerlos en 0 (visto el 12/11/2026; probablemente al reiniciar o por un servicio del sistema). El
-  script es idempotente: córrelo de nuevo después de reiniciar o de una actualización del sistema y solo hará lo
-  que falte.
+- **Algunos ajustes vuelven solos.** La Xiaomi vuelve a poner en 1 `user_experience_enabled` y `upload_log_pref`
+  **en cada arranque** (comprobado reiniciándola el 12/11/2026). Por eso el Inicio, desde la 0.5.0, los revisa al
+  encender la tele y al volver a él, y vuelve a apagarlos: el script le da el permiso que necesita al instalarlo o
+  al limpiar la telemetría (ver el README, «Mantener apagada la telemetría»). Sin el Inicio, corre el script de
+  nuevo después de reiniciar: es idempotente y solo hace lo que falte. Las apps desactivadas no vuelven.
 - **El inicio no cambia.** Algún fabricante tiene otro inicio que el script no conoce. Míralo con
   `adb shell cmd package query-activities -a android.intent.action.MAIN -c android.intent.category.HOME`,
   desactívalo con `adb shell pm disable-user --user 0 <paquete>` y, si funciona, súmalo a `inicios` en el catálogo.

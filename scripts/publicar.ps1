@@ -79,7 +79,7 @@ $Notas
 
 ## Instalar o actualizar
 
-- Desde el propio inicio: mantén OK sobre cualquier app → «Buscar actualización del inicio». Android pide confirmar.
+- Desde el propio inicio: el botón «Buscar actualización», junto a la hora (desde la 0.5.0; en la 0.4.0, mantén OK sobre cualquier app → «Buscar actualización del inicio»). Android pide confirmar.
 - Por ADB: ``powershell -File scripts/instalar.ps1 -Ip <IP de tu TV> -Apk $nombreApk``.
 
 ## Verificar

@@ -34,7 +34,7 @@ apksigner). Detalle en `README.md`. Licencia GPL-3.0.
    manifiesto) está en `.gitignore`; nunca las subas, las imprimas ni las copies fuera de ahí.
 2. **Sin dependencias.** Antes de sumar una, medir con `adb shell dumpsys meminfo cl.itatagroup.launcher`.
 3. **Sin telemetría ni conexiones a internet nuevas.** `INTERNET` y `REQUEST_INSTALL_PACKAGES` existen
-   solo para «Buscar actualización del inicio», que el usuario elige a mano: el inicio **nunca consulta
+   solo para el botón «Buscar actualización», que el usuario pulsa a mano: el inicio **nunca consulta
    solo**. No agregar otras conexiones ni consultas automáticas.
 4. **Aspecto en recursos XML** (`res/`), no en código. Lo configurable en `res/values/config.xml`.
 5. **Todo cambio que hagas en un equipo** (paquetes quitados, ajustes) se documenta en su doc de

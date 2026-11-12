@@ -155,9 +155,17 @@ if (-not $PSBoundParameters.ContainsKey("Receptor") -and -not $Si) {
 }
 
 $elegidas = @($planes | Where-Object { $_.Elegido } | ForEach-Object { $_.Acciones })
+# Guardián de privacidad del Inicio (desde la 0.5.0): algunas teles vuelven a encender los ajustes de envío de
+# datos en cada arranque, y el Inicio los vuelve a apagar si tiene WRITE_SECURE_SETTINGS, que Android solo deja
+# dar por ADB. Se da al instalar el Inicio, o si ya está y se eligió limpiar la telemetría y todavía no lo tiene.
+$paqueteInicio = $catalogoDatos.apps.inicio.paquete
+$conTelemetria = @($planes | Where-Object { $_.Elegido -and $_.Grupo.id -eq "telemetria" }).Count -gt 0
+$yaTienePermiso = $instalados.ContainsKey($paqueteInicio) -and
+  ((Shell "dumpsys package $paqueteInicio") -match "WRITE_SECURE_SETTINGS: granted=true")
+$darPermiso = $Inicio -or ($conTelemetria -and $instalados.ContainsKey($paqueteInicio) -and -not $yaTienePermiso)
 Titulo "Resumen"
-Write-Host "$($elegidas.Count) cambio(s) de limpieza$(if ($Inicio) { ' + instalar el Inicio' })$(if ($Receptor) { ' + instalar Pantalla' })."
-if (-not $elegidas -and -not $Inicio -and -not $Receptor) { Write-Host "Nada que hacer."; return }
+Write-Host "$($elegidas.Count) cambio(s) de limpieza$(if ($Inicio) { ' + instalar el Inicio' })$(if ($Receptor) { ' + instalar Pantalla' })$(if ($darPermiso -and -not $Inicio) { ' + que el Inicio mantenga apagada la telemetría' })."
+if (-not $elegidas -and -not $Inicio -and -not $Receptor -and -not $darPermiso) { Write-Host "Nada que hacer."; return }
 if (-not $Aplicar) {
   if ($Si) { Write-Host "Simulación (agrega -Aplicar para hacerlo)."; $elegidas | Format-Table Tipo, Paquete, Clave, Valor, Que -AutoSize | Out-Host; return }
   $Aplicar = SiNo "¿Aplicar ahora? (queda un revertir.ps1 para deshacerlo)" $false
@@ -293,6 +301,17 @@ if ($Inicio) {
   else { Write-Host "Instalado, pero el inicio sigue siendo otro: revisa docs/limpiar-tv.md («El inicio no cambia»)." -ForegroundColor Yellow }
 }
 if ($Receptor) { Titulo "Pantalla"; InstalarApp "receptor" $ApkReceptor }
+
+if ($darPermiso) {
+  Titulo "Mantener apagada la telemetría"
+  $paqueteInicio = $catalogoDatos.apps.inicio.paquete
+  if (Paso "dar al Inicio el permiso para mantener apagados los ajustes de envío de datos" "pm grant $paqueteInicio android.permission.WRITE_SECURE_SETTINGS") {
+    Revertir "pm revoke $paqueteInicio android.permission.WRITE_SECURE_SETTINGS"
+    Write-Host "El Inicio los revisará al encender la tele y al volver a él (se ve y se apaga con el botón «Telemetría» junto a la hora)." -ForegroundColor Green
+  } else {
+    Write-Host "Este Inicio no tiene el guardián (es anterior a la 0.5.0): actualízalo para usarlo." -ForegroundColor Yellow
+  }
+}
 
 # ── revertir.ps1 ────────────────────────────────────────────────────────────────────────────────
 $rutaRevertir = Join-Path $carpeta "revertir.ps1"

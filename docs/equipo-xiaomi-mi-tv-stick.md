@@ -41,6 +41,12 @@ Si tenías otro launcher de terceros u otras apps que no usas, puedes desinstala
 
 ## Ajustes
 
+> **Vuelven en cada arranque** (comprobado el 12/11/2026, reiniciando): `global user_experience_enabled` y
+> `secure upload_log_pref` vuelven a 1; los demás se mantienen, y los paquetes quitados o desactivados no vuelven.
+> Desde la 0.5.0 el inicio los vuelve a apagar al arrancar y al volver a él (botón «Telemetría» junto a la hora),
+> con el permiso `WRITE_SECURE_SETTINGS` dado por ADB. Revertir: `adb shell pm revoke cl.itatagroup.launcher
+> android.permission.WRITE_SECURE_SETTINGS`.
+
 > Desde la 0.3.0 del launcher, `limpiar-tv.ps1` (al instalar el Inicio) también fija el salvapantallas propio
 > (`screensaver_components cl.itatagroup.launcher/.ClockDream`, `screensaver_enabled 1`). Requiere
 > tener instalada la 0.3.0 o posterior. Antes de cambiarlo, el de este equipo era

@@ -23,6 +23,6 @@ repositorio de GitHub (reporte privado). Cuenta qué encontraste, cómo reproduc
 - Cambios en la TV hechos por el usuario con los scripts opcionales de limpieza, que son reversibles
   y están documentados.
 
-El launcher solo usa internet cuando eliges «Buscar actualización del inicio» (un GET a los archivos del
+El launcher solo usa internet cuando pulsas «Buscar actualización» (un GET a los archivos del
 release en GitHub, sin datos del equipo), no envía datos y no guarda cuentas; cualquier hallazgo que
 contradiga eso es de máxima prioridad.

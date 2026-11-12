@@ -24,13 +24,30 @@ Philips, frente a ~81 MB del launcher de Google y ~96 MB de Projectivy).
     de confirmación del sistema; nunca desinstala nada sin que lo confirmes).
   - `queries` (visibilidad de paquetes, Android 11+): para poder listar las apps instaladas; sin eso la
     lista quedaría vacía.
-  - `INTERNET` y `REQUEST_INSTALL_PACKAGES`: **solo** para «Buscar actualización del inicio». Se pueden
-    comprobar en `app/src/main/AndroidManifest.xml` y con `docs/verificar.md`.
+  - `INTERNET` y `REQUEST_INSTALL_PACKAGES`: **solo** para el botón «Buscar actualización».
+  - `WRITE_SECURE_SETTINGS` y `RECEIVE_BOOT_COMPLETED`: para mantener apagada la telemetría (ver abajo).
+    Android **no** concede `WRITE_SECURE_SETTINGS` al instalar: solo se da por ADB, y sin él no hace nada.
+
+  Se pueden comprobar en `app/src/main/AndroidManifest.xml` y con `docs/verificar.md`.
+
+## Mantener apagada la telemetría
+
+Algunas teles vuelven a encender solas los ajustes de envío de datos: la Xiaomi Mi TV Stick pone otra vez en 1
+`user_experience_enabled` y `upload_log_pref` en cada arranque (comprobado el 12/11/2026). El inicio los revisa
+**al encender la tele y cada vez que vuelves a él**, y vuelve a apagar los que se encendieron. Solo toca la
+lista de ajustes de `GuardianPrivacidad.java` (los del grupo «telemetría» de `scripts/catalogo-tv.json`); no lee
+ni manda nada más, y no puede volver a desactivar apps (Android solo lo permite a las del sistema).
+
+- Necesita un permiso que solo se da desde un PC: `scripts/limpiar-tv.ps1` lo da al instalar el inicio o al
+  limpiar la telemetría, o a mano: `adb shell pm grant cl.itatagroup.launcher android.permission.WRITE_SECURE_SETTINGS`
+  (se quita con `pm revoke`).
+- El botón **«Telemetría»**, junto a la hora, dice si está vigilando, cuántas veces tuvo que volver a apagarla y
+  cuándo fue la última, y permite apagarlo.
 
 ## Actualizaciones
 
-El inicio **nunca consulta solo**. Solo si mantienes OK sobre cualquier app y eliges **«Buscar
-actualización del inicio»** (la última opción del menú):
+El inicio **nunca consulta solo**. Solo si pulsas **«Buscar actualización»**, el botón que está junto a la
+hora (se llega con la flecha arriba):
 
 1. Pide, con un GET sin cookies ni datos del equipo (User-Agent `Inicio/<versión>`), dos archivos del
    último release de este repositorio en GitHub:
@@ -110,7 +127,9 @@ responsabilidad**: revisa la lista antes de aplicar.
 app/src/main/
   AndroidManifest.xml          HOME + LEANBACK_LAUNCHER
   java/cl/itatagroup/launcher/
-    Home.java                  inicio: favoritas + todas, lanzar app, menú de mantener OK, Atrás no sale
+    Home.java                  inicio: botones junto a la hora, favoritas + todas, menú de mantener OK, Atrás no sale
+    GuardianPrivacidad.java    mantiene apagados los ajustes de envío de datos (con permiso dado por ADB)
+    AlEncender.java            al arrancar la tele, le pide al guardián que revise
     Actualizador.java          búsqueda manual de actualización: manifiesto firmado, descarga e instalación
     FirmaManifiesto.java       verificación de la firma del manifiesto (Java puro, se prueba en el PC)
     ResultadoInstalacion.java  resultado de la instalación: abre la confirmación de Android
