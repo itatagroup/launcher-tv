@@ -28,12 +28,13 @@ se llama `inicio-<versión>.apk`; también trae `version.json` y su firma `versi
 Con `apksigner` (viene en `build-tools` del SDK de Android):
 
 ```bash
-apksigner verify --print-certs launcher.apk
+apksigner verify --print-certs inicio-<versión>.apk
 ```
 
-La línea `certificate SHA-256 digest` debe coincidir con la huella publicada del proyecto:
+La línea `Signer #1 certificate SHA-256 digest` debe ser (certificado `CN=Mini`, el nombre de trabajo del
+proyecto):
 
-`<huella SHA-256 del certificado: se publica con el primer release>`
+`8b4c90ef2a5d8d2a24a284f89b2b0990c428c1ab5af1cac94f46a7ecee690b20`
 
 Si la huella es distinta, la APK no la firmó el mantenedor: no la instales.
 
