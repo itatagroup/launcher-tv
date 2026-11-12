@@ -2,7 +2,7 @@
 
 Equipo de referencia: Mi TV `MiTV-AESP0` (producto `aquaman`), Android 10, por ADB sobre la
 red local (puerto 5555, en la IP de tu TV; la conexión se autoriza una vez en la pantalla de la TV). Probado en
-noviembre de 2026. Todo lo de abajo está automatizado en `scripts/optimizar-tvbox.ps1` (limpieza y ajustes) y `scripts/instalar.ps1` (los dos inicios que compiten con el launcher propio).
+noviembre de 2026. Todo lo de abajo está automatizado en `scripts/limpiar-tv.ps1` (limpieza y ajustes; las entradas de esta tele están en `scripts/catalogo-tv.json` con la marca `xiaomi`) y `scripts/instalar.ps1` (los dos inicios que compiten con el launcher propio).
 
 Nada se borró del sistema: lo «quitado» sale solo del usuario 0 (el paquete sigue en la partición
 del sistema) y lo «desactivado» queda inactivo.
@@ -37,11 +37,11 @@ Revertir: `adb shell pm enable --user 0 <paquete>`.
 ## Apps de terceros
 
 Si tenías otro launcher de terceros u otras apps que no usas, puedes desinstalarlas
-(`adb shell pm uninstall <paquete>`); `optimizar-tvbox.ps1` trae para eso la lista `$desinstalar`, vacía por defecto.
+(`adb shell pm uninstall <paquete>`); `limpiar-tv.ps1` no lo hace: nunca toca las apps que instalaste tú.
 
 ## Ajustes
 
-> Desde la 0.3.0 del launcher, `optimizar-tvbox.ps1` también fija el salvapantallas propio
+> Desde la 0.3.0 del launcher, `limpiar-tv.ps1` (al instalar el Inicio) también fija el salvapantallas propio
 > (`screensaver_components cl.itatagroup.launcher/.ClockDream`, `screensaver_enabled 1`). Requiere
 > tener instalada la 0.3.0 o posterior. Antes de cambiarlo, el de este equipo era
 > `com.google.android.backdrop/.Backdrop` (modo ambiente de Google); para volver a él:
@@ -58,7 +58,7 @@ Si tenías otro launcher de terceros u otras apps que no usas, puedes desinstala
 | `window_animation_scale`, `transition_animation_scale`, `animator_duration_scale` | 0.5 | Interfaz más ágil |
 
 No se encontró ningún ajuste que suba «fotos» o capturas al fabricante; los de arriba son los que
-envían datos. Se corrió además `pm trim-caches 999G` y `cmd package bg-dexopt-job` (ambos están en `optimizar-tvbox.ps1`).
+envían datos. Se corrió además `pm trim-caches 999G` y `cmd package bg-dexopt-job` (ambos están en el grupo «rendimiento» de `limpiar-tv.ps1`).
 
 ## Lo que se dejó a propósito
 

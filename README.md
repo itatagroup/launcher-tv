@@ -88,17 +88,21 @@ powershell -File scripts/instalar.ps1 -Ip <IP de tu TV>
 Instala con `adb install -r`, lo fija como inicio, desactiva los inicios de fábrica que compiten con
 él y comprueba que el inicio quedó en `cl.itatagroup.launcher`. Todo es reversible (`pm enable`).
 
-## Limpieza opcional del equipo
+## Limpiar la tele
 
-Estos scripts quitan (solo para el usuario 0) o desactivan apps de telemetría y publicidad del
-fabricante y ajustan envío de datos y animaciones. Nada se borra del sistema y cada cambio se puede
-revertir; el detalle de cada paquete y cómo volver atrás está en los documentos de equipo. Son
-opcionales y **se usan bajo tu responsabilidad**: revisa la lista antes de correrlos.
+`scripts/limpiar-tv.ps1` limpia cualquier tele con Android TV o Google TV por ADB, de forma interactiva:
+detecta la marca, cruza lo instalado con el catálogo `scripts/catalogo-tv.json` (telemetría, publicidad, apps de
+fábrica, ajustes de envío de datos), muestra lo que haría y solo aplica lo que elijas. Puede instalar también este
+inicio y Pantalla desde sus releases firmados. Nada se borra del sistema y deja un `revertir.ps1` con todo lo hecho.
+Xiaomi y Philips tienen listas probadas; las demás marcas reciben solo lo genérico y seguro.
 
-- `scripts/optimizar-tvbox.ps1 -Ip <IP de tu TV>` — Xiaomi Mi TV: `docs/equipo-xiaomi-mi-tv-stick.md`.
-- `scripts/optimizar-philips.ps1 -Ip <IP de tu TV>` — Philips Android TV: `docs/equipo-philips-android-tv.md`.
+```bash
+powershell -ExecutionPolicy Bypass -File scripts/limpiar-tv.ps1
+```
 
-Ambos aceptan `-SoloVer` para mostrar lo que harían sin aplicar nada.
+Guía completa (activar la depuración, cada grupo, deshacer, comandos a mano, sumar una marca):
+`docs/limpiar-tv.md`. Para hacerlo con un agente de IA: `docs/limpiar-con-agente.md`. **Bajo tu
+responsabilidad**: revisa la lista antes de aplicar.
 
 ## Estructura
 
@@ -121,9 +125,9 @@ tools/build.mjs                build y firma, igual en Windows y en Linux/macOS
 tools/firmar-manifiesto.mjs    firma version.json para un release (con keystore/actualizaciones.pem)
 tools/probar-firma.mjs         prueba en el PC la verificación de firma del actualizador
 scripts/publicar.ps1           arma dist/publicar/v<versión>/ para un release de GitHub
-scripts/instalar.ps1           instala por ADB y fija el inicio
-scripts/optimizar-tvbox.ps1    limpieza y ajustes de la Xiaomi (reversible)
-scripts/optimizar-philips.ps1  limpieza y ajustes de la Philips (reversible)
+scripts/instalar.ps1           instala por ADB una APK compilada aquí y fija el inicio
+scripts/limpiar-tv.ps1         limpieza interactiva y reversible de una tele (ver docs/limpiar-tv.md)
+scripts/catalogo-tv.json       qué paquetes y ajustes toca la limpieza, por grupo y marca
 docs/                          documentos de equipo, build y firma, verificación de una APK
 version.json                   versionCode / versionName
 ```

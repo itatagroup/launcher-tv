@@ -3,8 +3,8 @@
 Equipo: TV Philips FHD 32" (`PH0M_LT_T32_2K`, firmware TP Vision sobre MediaTek), Android 11,
 1,3 GB de RAM, ADB por red en el puerto 5555 (en la IP de tu TV). Probado en noviembre de 2026, con el
 mismo criterio que la Xiaomi (`equipo-xiaomi-mi-tv-stick.md`). Todo está automatizado en
-`scripts/optimizar-philips.ps1` (limpieza y ajustes) y `scripts/instalar.ps1 -Ip <IP de tu TV>`
-(launcher propio como inicio).
+`scripts/limpiar-tv.ps1` (limpieza, ajustes e inicio propio; las entradas de esta tele están en
+`scripts/catalogo-tv.json` con la marca `philips`; guía en `limpiar-tv.md`).
 
 Nada se borró del sistema: lo «quitado» sale solo del usuario 0 y lo «desactivado» queda inactivo.
 

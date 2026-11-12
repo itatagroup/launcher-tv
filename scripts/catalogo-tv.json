@@ -1,0 +1,134 @@
+{
+  "formato": 1,
+  "nota": "Catálogo de limpieza de teles Android para scripts/limpiar-tv.ps1. Cada paquete solo se toca si está instalado. 'quitar' = pm uninstall --user 0 (se revierte con pm install-existing); 'desactivar' = pm disable-user --user 0 (se revierte con pm enable). Nada se borra del sistema. 'marca' limita una entrada a esas teles (detectadas por ro.product.manufacturer/brand/model); 'todas' = cualquier Android TV o Google TV. Para sumar una marca: agrega su regla en 'marcas' y sus paquetes, y anota en qué tele lo probaste.",
+  "marcas": {
+    "xiaomi":  { "nombre": "Xiaomi (Mi TV Stick, Mi Box, Mi TV)", "patron": "xiaomi|mitv|aquaman", "probado": "Mi TV Stick MiTV-AESP0, Android 10" },
+    "philips": { "nombre": "Philips / TPV", "patron": "philips|tpv", "probado": "Philips 32\" PH0M (MediaTek), Android 11" }
+  },
+  "grupos": [
+    {
+      "id": "telemetria",
+      "nombre": "Telemetría y envío de datos",
+      "descripcion": "Servicios que recolectan o mandan datos de uso al fabricante o a Google.",
+      "porDefecto": true,
+      "paquetes": [
+        { "paquete": "com.google.android.feedback", "accion": "quitar", "marca": "todas", "que": "Envío de comentarios a Google" },
+        { "paquete": "com.google.android.tv.bugreportsender", "accion": "quitar", "marca": "todas", "que": "Envío de informes de error a Google" },
+        { "paquete": "com.miui.tv.analytics", "accion": "quitar", "marca": "xiaomi", "que": "Analítica de Xiaomi" },
+        { "paquete": "com.xiaomi.statistic", "accion": "quitar", "marca": "xiaomi", "que": "Estadísticas de Xiaomi" },
+        { "paquete": "org.droidtv.gel", "accion": "quitar", "marca": "philips", "que": "GatheringService: recolección de datos de Philips" },
+        { "paquete": "org.droidtv.candeebug", "accion": "quitar", "marca": "philips", "que": "CollectionService: recolección de datos" },
+        { "paquete": "org.droidtv.tv.frameworklogger", "accion": "quitar", "marca": "philips", "que": "Registro del sistema de Philips" },
+        { "paquete": "org.droidtv.nettvregistration", "accion": "quitar", "marca": "philips", "que": "Registro Smart TV de Philips" }
+      ],
+      "ajustes": [
+        { "espacio": "global", "clave": "user_experience_enabled", "valor": "0", "que": "Programa de experiencia de usuario" },
+        { "espacio": "secure", "clave": "upload_log_pref", "valor": "0", "que": "Subida de registros" },
+        { "espacio": "global", "clave": "send_action_app_error", "valor": "0", "que": "Informes de errores de apps" },
+        { "espacio": "global", "clave": "upload_apk_enable", "valor": "0", "que": "Subida de APK" },
+        { "espacio": "secure", "clave": "limit_ad_tracking", "valor": "1", "que": "Excluirse del seguimiento publicitario" },
+        { "espacio": "global", "clave": "network_recommendations_enabled", "valor": "0", "que": "Recomendaciones de redes" },
+        { "espacio": "global", "clave": "activity_starts_logging_enabled", "valor": "0", "que": "Registro de aperturas de apps" }
+      ]
+    },
+    {
+      "id": "publicidad",
+      "nombre": "Publicidad, recomendaciones y canales",
+      "descripcion": "Filas de recomendaciones, canales patrocinados y clientes de publicidad.",
+      "porDefecto": true,
+      "paquetes": [
+        { "paquete": "com.google.android.tvrecommendations", "accion": "desactivar", "marca": "todas", "que": "Recomendaciones del inicio de Google" },
+        { "paquete": "com.mitv.tvhome.michannel", "accion": "desactivar", "marca": "xiaomi", "que": "Canales de Xiaomi" },
+        { "paquete": "com.mitv.tvhome.mitvplus", "accion": "quitar", "marca": "xiaomi", "que": "Mi TV+ (canales con publicidad)" },
+        { "paquete": "com.tpv.xmic.ots.cms.client", "accion": "quitar", "marca": "philips", "que": "Cliente CMS de TPV (publicidad)" },
+        { "paquete": "android.autoinstalls.config.tpv.device", "accion": "quitar", "marca": "philips", "que": "Reinstala apps de fábrica por la Play Store" }
+      ]
+    },
+    {
+      "id": "fabrica",
+      "nombre": "Apps de fábrica poco usadas",
+      "descripcion": "Apps preinstaladas que la mayoría no usa. Revisa la lista: si usas alguna, no apliques este grupo o restáurala después.",
+      "porDefecto": false,
+      "paquetes": [
+        { "paquete": "com.google.android.music", "accion": "quitar", "marca": "todas", "que": "Google Play Música (sin servicio)" },
+        { "paquete": "com.google.android.videos", "accion": "quitar", "marca": "todas", "que": "Google TV / Play Películas" },
+        { "paquete": "com.google.android.play.games", "accion": "quitar", "marca": "todas", "que": "Google Play Juegos" },
+        { "paquete": "com.google.android.youtube.tvmusic", "accion": "quitar", "marca": "todas", "que": "YouTube Music" },
+        { "paquete": "com.google.android.marvin.talkback", "accion": "quitar", "marca": "todas", "que": "TalkBack (lector de pantalla: no lo quites si lo usas)" },
+        { "paquete": "com.google.android.syncadapters.contacts", "accion": "quitar", "marca": "todas", "que": "Sincronización de contactos" },
+        { "paquete": "com.google.android.syncadapters.calendar", "accion": "quitar", "marca": "todas", "que": "Sincronización de calendario" },
+        { "paquete": "com.google.android.backdrop", "accion": "quitar", "marca": "todas", "que": "Salvapantallas «Ambient» de Google (pesado)" },
+        { "paquete": "com.android.gallery3d", "accion": "quitar", "marca": "todas", "que": "Galería" },
+        { "paquete": "com.android.htmlviewer", "accion": "quitar", "marca": "todas", "que": "Visor HTML" },
+        { "paquete": "com.android.printspooler", "accion": "quitar", "marca": "todas", "que": "Cola de impresión" },
+        { "paquete": "com.android.dreams.basic", "accion": "quitar", "marca": "todas", "que": "Salvapantallas básico" },
+        { "paquete": "com.google.android.partnersetup", "accion": "quitar", "marca": "philips", "que": "Configuración de socios de Google" },
+        { "paquete": "com.google.android.onetimeinitializer", "accion": "quitar", "marca": "philips", "que": "Inicializador de primera vez" },
+        { "paquete": "com.google.android.sss.authbridge", "accion": "quitar", "marca": "philips", "que": "Puente de autenticación de Google" },
+        { "paquete": "org.droidtv.nettv.market", "accion": "quitar", "marca": "philips", "que": "Galería de apps de Philips" },
+        { "paquete": "org.droidtv.eum", "accion": "quitar", "marca": "philips", "que": "Manual electrónico de Philips" }
+      ]
+    },
+    {
+      "id": "streaming",
+      "nombre": "Apps de streaming preinstaladas",
+      "descripcion": "Netflix, Prime Video y Disney+ de fábrica. Quítalas solo si no las usas (se pueden volver a instalar desde la Play Store).",
+      "porDefecto": false,
+      "paquetes": [
+        { "paquete": "com.netflix.ninja", "accion": "quitar", "marca": "philips", "que": "Netflix de fábrica" },
+        { "paquete": "com.amazon.amazonvideo.livingroom", "accion": "quitar", "marca": "philips", "que": "Prime Video de fábrica" },
+        { "paquete": "com.disney.disneyplus", "accion": "quitar", "marca": "philips", "que": "Disney+ de fábrica" }
+      ]
+    },
+    {
+      "id": "asistentes",
+      "nombre": "Asistentes de configuración y actualizaciones del sistema",
+      "descripcion": "Asistentes de primera configuración y el servicio de actualizaciones del sistema (OTA). Sin OTA la tele no se actualiza sola: reactívalo para actualizar el firmware.",
+      "porDefecto": false,
+      "paquetes": [
+        { "paquete": "com.google.android.tungsten.setupwraith", "accion": "desactivar", "marca": "todas", "que": "Asistente de configuración de Google" },
+        { "paquete": "com.xiaomi.android.tvsetup.partnercustomizer", "accion": "desactivar", "marca": "xiaomi", "que": "Personalizador de configuración de Xiaomi" },
+        { "paquete": "com.xiaomi.mitv.updateservice", "accion": "desactivar", "marca": "xiaomi", "que": "Actualizaciones del sistema (OTA) de Xiaomi" },
+        { "paquete": "com.mediatek.wwtv.setupwizard", "accion": "desactivar", "marca": "philips", "que": "Asistente de configuración de MediaTek" },
+        { "paquete": "com.mediatek.android.leanbacklauncher.partnercustomizer", "accion": "desactivar", "marca": "philips", "que": "Personalizador del inicio" },
+        { "paquete": "com.android.tv.ota", "accion": "desactivar", "marca": "philips", "que": "Actualizaciones del sistema (OTA)" }
+      ]
+    },
+    {
+      "id": "rendimiento",
+      "nombre": "Interfaz más ágil y limpieza de caché",
+      "descripcion": "Animaciones a la mitad, limpieza de caché y recompilación de apps en segundo plano (puede tardar unos minutos).",
+      "porDefecto": true,
+      "ajustes": [
+        { "espacio": "global", "clave": "window_animation_scale", "valor": "0.5", "que": "Animación de ventanas" },
+        { "espacio": "global", "clave": "transition_animation_scale", "valor": "0.5", "que": "Animación de transiciones" },
+        { "espacio": "global", "clave": "animator_duration_scale", "valor": "0.5", "que": "Duración de animaciones" }
+      ],
+      "comandos": [
+        { "comando": "pm trim-caches 999G", "que": "Limpiar la caché de las apps" },
+        { "comando": "cmd package bg-dexopt-job", "que": "Optimizar las apps (puede tardar varios minutos)" }
+      ]
+    }
+  ],
+  "inicios": [
+    { "paquete": "com.google.android.tvlauncher", "que": "Inicio de Google TV / Android TV" },
+    { "paquete": "com.mitv.tvhome.atv", "que": "Inicio de Xiaomi (PatchWall)" }
+  ],
+  "apps": {
+    "inicio": {
+      "nombre": "Inicio (launcher sin publicidad)",
+      "paquete": "cl.itatagroup.launcher",
+      "repo": "itatagroup/launcher-tv",
+      "app": "launcher-android",
+      "manifiesto": "https://github.com/itatagroup/launcher-tv/releases/latest/download/version.json"
+    },
+    "receptor": {
+      "nombre": "Pantalla (ver el PC o el teléfono en la tele)",
+      "paquete": "cl.itatagroup.pantalla",
+      "repo": "itatagroup/pantalla-tv",
+      "app": "receptor-android",
+      "manifiesto": "https://github.com/itatagroup/pantalla-tv/releases/download/actualizaciones/receptor-android.json"
+    }
+  },
+  "clavePublica": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENdrCrDU1A0B87/zG/2dD80YPGfx8+gK2CclanFT9+8hPOlWFc9Q4zYXJqMEdQEd6bdsQ2eMgjqwhea0vcj95zA=="
+}

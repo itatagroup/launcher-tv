@@ -38,8 +38,9 @@ apksigner). Detalle en `README.md`. Licencia GPL-3.0.
    solo**. No agregar otras conexiones ni consultas automáticas.
 4. **Aspecto en recursos XML** (`res/`), no en código. Lo configurable en `res/values/config.xml`.
 5. **Todo cambio que hagas en un equipo** (paquetes quitados, ajustes) se documenta en su doc de
-   equipo con cómo revertirlo: `docs/equipo-xiaomi-mi-tv-stick.md` y `scripts/optimizar-tvbox.ps1`;
-   `docs/equipo-philips-android-tv.md` y `scripts/optimizar-philips.ps1`.
+   equipo con cómo revertirlo (`docs/equipo-xiaomi-mi-tv-stick.md`, `docs/equipo-philips-android-tv.md`) y,
+   si sirve para otros, en el catálogo `scripts/catalogo-tv.json` que usa `scripts/limpiar-tv.ps1`. La limpieza
+   es determinista: lo que hace está en el catálogo, no en el criterio de quien la corre.
 6. Sube `versionCode` en `version.json` en cada cambio que se vaya a publicar.
 7. `Actualizador.java`, `FirmaManifiesto.java` y `ResultadoInstalacion.java` son copia de los de
    `pantalla-tv/android-comun/java/cl/itatagroup/actualizacion/`: un arreglo en uno va también al otro.
