@@ -43,7 +43,9 @@ Si tenías otro launcher de terceros u otras apps que no usas, puedes desinstala
 
 > Desde la 0.3.0 del launcher, `optimizar-tvbox.ps1` también fija el salvapantallas propio
 > (`screensaver_components cl.itatagroup.launcher/.ClockDream`, `screensaver_enabled 1`). Requiere
-> tener instalada la 0.3.0 o posterior.
+> tener instalada la 0.3.0 o posterior. Antes de cambiarlo, el de este equipo era
+> `com.google.android.backdrop/.Backdrop` (modo ambiente de Google); para volver a él:
+> `adb shell settings put secure screensaver_components com.google.android.backdrop/.Backdrop`.
 
 | Ajuste | Valor | Para qué |
 |---|---|---|
