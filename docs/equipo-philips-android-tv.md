@@ -47,6 +47,8 @@ launcher propio lo reemplaza. Se reinstala desde la Play Store si quieres volver
 
 - `cl.itatagroup.launcher` (este repo), fijado como inicio; desde la 0.3.0: favoritas, banners,
   menú de mantener OK y salvapantallas.
+- `cl.itatagroup.pantalla` (receptor de `pantalla-tv`): **0.9.0 de prueba** desde el 16/11/2026 (avisos del audio, sin
+  publicar; antes 0.8.0). Se vuelve a la publicada instalando su APK con `adb install -r -d`.
 
 Ocultos en el launcher (`res/values/config.xml`), siguen instalados: «ToU»
 (`com.android.tv.tou`), «Disclaimer Customization» y «Televisión en directo»
