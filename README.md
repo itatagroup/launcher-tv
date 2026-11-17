@@ -9,6 +9,8 @@ Trae además un **salvapantallas** propio: un reloj que se desplaza por la panta
 Sin tienda, sin recomendaciones, sin publicidad y con un consumo de RAM mínimo (~35 MB en una TV
 Philips, frente a ~81 MB del launcher de Google y ~96 MB de Projectivy).
 
+**Descargas: [releases de GitHub](https://github.com/itatagroup/launcher-tv/releases)** (el APK del inicio, firmado; la última es «Latest»).
+
 - Paquete: `cl.itatagroup.launcher` · Android 5+ (minSdk 21) · sin dependencias (solo el SDK de Android).
 - Licencia: GPL-3.0 (ver `LICENSE`).
 - Rama de trabajo `dev`, estable `main`.
